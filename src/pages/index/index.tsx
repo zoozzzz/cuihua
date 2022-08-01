@@ -1,32 +1,38 @@
-import { Component } from 'react'
+import Taro from '@tarojs/taro';
 import { View, Text } from '@tarojs/components'
-import { AtButton } from 'taro-ui'
-
-import "taro-ui/dist/style/components/button.scss" // 按需引入
+import { AtGrid } from 'taro-ui'
 import './index.less'
 
-export default class Index extends Component {
-
-  componentWillMount () { }
-
-  componentDidMount () { }
-
-  componentWillUnmount () { }
-
-  componentDidShow () { }
-
-  componentDidHide () { }
-
-  render () {
-    return (
-      <View className='index'>
-        <Text>Hello world!</Text>
-        <AtButton type='primary'>I need Taro UI</AtButton>
-        <Text>Taro UI 支持 Vue 了吗？</Text>
-        <AtButton type='primary' circle={true}>支持</AtButton>
-        <Text>共建？</Text>
-        <AtButton type='secondary' circle={true}>来</AtButton>
-      </View>
-    )
-  }
+interface GameItem {
+  image: string;
+  value: string;
+  path: string;
 }
+
+const Index = () => {
+
+  const onSelectGame = (item: GameItem, index: number) => {
+    item.path && Taro.navigateTo({url: item.path})
+  }
+  return (
+    <View className='index'>
+      <AtGrid
+        onClick={onSelectGame}
+        data={
+        [
+          {
+            image: 'https://img12.360buyimg.com/jdphoto/s72x72_jfs/t6160/14/2008729947/2754/7d512a86/595c3aeeNa89ddf71.png',
+            value: '数字爆炸',
+            path: '/pages/numBoom/index'
+          },
+          {
+            image: 'https://img20.360buyimg.com/jdphoto/s72x72_jfs/t15151/308/1012305375/2300/536ee6ef/5a411466N040a074b.png',
+            value: '（敬请期待）',
+            path: ''
+          },
+        ]
+      } />
+    </View>
+  )
+}
+export default Index;

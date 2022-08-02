@@ -1,3 +1,4 @@
+
 .wrapper {
   width: 100vw;
   height: 100vh;
@@ -10,8 +11,17 @@
   .inputWrapper {
     position: absolute;
     left: 50%;
-    top: 200px;
+    top: 250px;
     transform: translateX(-50%);
+
+    .at-input-number__input, .at-input-number input {
+      width: 240px;
+      font-size: 40px;
+      height: 86px;
+    }
+    .at-input-number .at-input-number__btn{
+      width: 60px;
+    }
   }
 
   .btn {
@@ -22,6 +32,7 @@
     justify-content: center;
     align-items: center;
     line-height: 1.5;
+    animation: myBreath 1s linear infinite;  
   }
 
   .tips {
@@ -29,5 +40,29 @@
     top: 100px;
     left: 50%;
     transform: translateX(-50%);
+
+    .tag{
+      display: inline-block;
+      width: 160px;
+      height: 64px;
+      font-size: 36px;
+      border-radius: 36px;
+      text-align: center;
+      line-height: 64px;
+      background-color: #6190E8;
+      color: #fff;
+    }
+  }
+}
+
+@keyframes myBreath {
+  0%{
+      transform: scale(0.88);
+  }
+  50%{
+      transform: scale(100%);
+  }
+  100%{
+      transform: scale(0.88);
   }
 }

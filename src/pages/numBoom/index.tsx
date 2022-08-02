@@ -1,5 +1,6 @@
+import Taro from '@tarojs/taro';
 import { View, Text, Image } from '@tarojs/components'
-import { AtButton, AtModal, AtIcon, AtInputNumber, AtCurtain, AtToast, AtModalHeader, AtModalContent, AtModalAction} from 'taro-ui';
+import { AtButton, AtModal, AtIcon, AtInputNumber, AtCurtain, AtToast, AtTag } from 'taro-ui';
 import { useEffect, useState } from 'react'
 import drink from '../../assets/drink.jpeg';
 import { generateNum } from './utils';
@@ -14,7 +15,7 @@ const NumBoom = () => {
   const [visibleRule, setVisibleRule] = useState(true);
 
   useEffect(() => {
-
+    Taro.showShareMenu({ withShareTicket: true })
   }, []);
 
   const onClick = () => {
@@ -56,19 +57,25 @@ const NumBoom = () => {
   return (
     <View className='wrapper'>
 
-    <AtModal
-      isOpened={visibleRule}
-      title='游戏规则'
-      cancelText='取消'
-      confirmText='确认'
-      // onClose={ () => setVisibleRule(false) }
-      onCancel={ () => setVisibleRule(false) }
-      onConfirm={ () => setVisibleRule(false) }
-      content='我叫你饮个时你就饮得噶啦'
-    />
+      <AtModal
+        isOpened={visibleRule}
+        title='游戏规则'
+        cancelText='取消'
+        confirmText='确认'
+        // onClose={ () => setVisibleRule(false) }
+        onCancel={() => setVisibleRule(false)}
+        onConfirm={() => setVisibleRule(false)}
+        content='我叫你饮个时你就饮得噶啦'
+      />
 
       {/* 已经生成数字 && 没中 */}
-      {!bingo && !!num && <View className='tips'>{`${range[0]} ~ ${range[1]}`}</View>}
+      {!bingo && !!num && (
+        <View className='tips'>
+          <View className='tag'>{range[0]}</View>
+          <Text> ~ </Text>
+          <View className='tag'>{range[1]}</View>
+        </View>
+      )}
       {
         !!num && <View className='inputWrapper'><AtInputNumber min={range[0]} max={range[1]} onChange={onChange} type='number' value={currentValue} /></View>
       }
@@ -79,8 +86,8 @@ const NumBoom = () => {
           </AtButton>
         ) : (
           <AtButton className='btn' type='primary' onClick={onClick}>
-            <View style={{ fontSize: 24 }}>生成随机数字</View>
-            <View>(0,100)</View>
+            <View style={{ fontSize: 24 }}>点击</View>
+            <View>生成随机数字</View>
           </AtButton>
         )
       }

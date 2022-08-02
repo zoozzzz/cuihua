@@ -2,6 +2,7 @@ import Taro from '@tarojs/taro';
 import { View, Text } from '@tarojs/components'
 import { AtGrid } from 'taro-ui'
 import './index.less'
+import { useEffect } from 'react';
 
 interface GameItem {
   image: string;
@@ -10,6 +11,9 @@ interface GameItem {
 }
 
 const Index = () => {
+  useEffect(() => {
+    Taro.showShareMenu({ withShareTicket: true })
+  }, []);
 
   const onSelectGame = (item: GameItem, index: number) => {
     item.path && Taro.navigateTo({url: item.path})

@@ -309,12 +309,12 @@ const NumBoom = () => {
       {bingo && (
         <View className='win-modal'>
           <View className='win-content'>
-            <View className='win-emoji'>🍻</View>
-            <Text className='win-title'>🎉 恭喜中奖！</Text>
-            <Text className='win-subtitle'>该喝酒了～</Text>
-            <Text className='win-number'>🎯 中奖数字: {num}</Text>
+            <View className='win-emoji'>🎆🎉🎆</View>
+            <Text className='win-title'>🎆 恭喜中奖！🎆</Text>
+            <Text className='win-subtitle'>🍻 该嗝酒了～ 🍻</Text>
+            <Text className='win-number'>🎯 中奖数字: {num} 🎯</Text>
             <Button className='reset-btn' onClick={resetGame}>
-              🔄 再来一局
+              🔄 再来一局 🔄
             </Button>
           </View>
         </View>

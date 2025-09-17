@@ -605,115 +605,265 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.9);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  animation: fadeIn 0.3s ease;
-}
-
-.win-content {
-  background: linear-gradient(145deg, #fff 0%, #f0f8ff 100%);
-  border-radius: 20px;
-  padding: 40px;
-  max-width: 350px;
-  margin: 20px;
-  text-align: center;
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
-  transform: scale(0.5);
-  animation: winPopIn 0.6s ease forwards;
-  position: relative;
-  overflow: hidden;
+  animation: winModalAppear 0.8s ease;
   
+  /* 添加全屏闪烁效果 */
   &::before {
     content: '';
     position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: repeating-linear-gradient(
-      45deg,
-      transparent,
-      transparent 2px,
-      rgba(255, 215, 0, 0.1) 2px,
-      rgba(255, 215, 0, 0.1) 4px
-    );
-    animation: confetti 2s linear infinite;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.3) 0%, transparent 70%);
+    animation: screenFlash 0.5s ease-in-out 3;
+    z-index: -1;
+  }
+  
+  /* 添加粒子效果 */
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+      radial-gradient(circle at 20% 30%, #ff6b6b 2px, transparent 2px),
+      radial-gradient(circle at 80% 20%, #4ecdc4 2px, transparent 2px),
+      radial-gradient(circle at 40% 70%, #f9ca24 2px, transparent 2px),
+      radial-gradient(circle at 90% 80%, #667eea 2px, transparent 2px),
+      radial-gradient(circle at 10% 90%, #ff8e53 2px, transparent 2px),
+      radial-gradient(circle at 70% 10%, #764ba2 2px, transparent 2px);
+    background-size: 50px 50px, 60px 60px, 40px 40px, 70px 70px, 45px 45px, 55px 55px;
+    animation: floatingParticles 3s linear infinite;
+    pointer-events: none;
   }
 }
 
-@keyframes winPopIn {
-  0% { transform: scale(0.5) rotate(-10deg); }
-  50% { transform: scale(1.1) rotate(5deg); }
-  100% { transform: scale(1) rotate(0deg); }
+.win-content {
+  background: linear-gradient(145deg, #fff 0%, #f0f8ff 50%, #fff3cd 100%);
+  border-radius: 30px;
+  padding: 50px 40px;
+  max-width: 400px;
+  margin: 20px;
+  text-align: center;
+  box-shadow: 
+    0 30px 60px rgba(0, 0, 0, 0.4),
+    0 0 0 5px rgba(255, 215, 0, 0.3),
+    0 0 0 10px rgba(255, 215, 0, 0.2),
+    0 0 100px rgba(255, 215, 0, 0.5);
+  transform: scale(0.3);
+  animation: epicWinPopIn 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+  position: relative;
+  overflow: hidden;
+  
+  /* 增强的彩带效果 */
+  &::before {
+    content: '';
+    position: absolute;
+    top: -100%;
+    left: -100%;
+    width: 300%;
+    height: 300%;
+    background: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 8px,
+      rgba(255, 215, 0, 0.2) 8px,
+      rgba(255, 215, 0, 0.2) 16px,
+      transparent 16px,
+      transparent 24px,
+      rgba(255, 0, 150, 0.2) 24px,
+      rgba(255, 0, 150, 0.2) 32px
+    );
+    animation: confettiStorm 3s linear infinite;
+  }
+  
+  /* 光芒效果 */
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(
+      circle,
+      rgba(255, 215, 0, 0.1) 0%,
+      rgba(255, 215, 0, 0.3) 30%,
+      transparent 70%
+    );
+    transform: translate(-50%, -50%);
+    animation: glowPulse 2s ease-in-out infinite;
+  }
 }
 
-@keyframes confetti {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+/* 新增动画关键帧 */
+@keyframes winModalAppear {
+  0% { 
+    opacity: 0;
+    backdrop-filter: blur(0px);
+  }
+  50% {
+    opacity: 0.8;
+    backdrop-filter: blur(5px);
+  }
+  100% { 
+    opacity: 1;
+    backdrop-filter: blur(10px);
+  }
+}
+
+@keyframes screenFlash {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+
+@keyframes floatingParticles {
+  0% { transform: translateY(100vh) rotate(0deg); }
+  100% { transform: translateY(-100vh) rotate(360deg); }
+}
+
+@keyframes epicWinPopIn {
+  0% { 
+    transform: scale(0.3) rotate(-180deg);
+    opacity: 0;
+  }
+  30% { 
+    transform: scale(1.3) rotate(-30deg);
+    opacity: 0.8;
+  }
+  60% { 
+    transform: scale(0.9) rotate(10deg);
+    opacity: 1;
+  }
+  80% { 
+    transform: scale(1.1) rotate(-5deg);
+  }
+  100% { 
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+@keyframes confettiStorm {
+  0% { transform: rotate(0deg) translateY(0); }
+  100% { transform: rotate(360deg) translateY(-50px); }
+}
+
+@keyframes glowPulse {
+  0%, 100% { 
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.3;
+  }
+  50% { 
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 0.6;
+  }
 }
 
 .win-emoji {
-  font-size: 60px;
-  animation: bounce 1s ease infinite;
-  margin-bottom: 20px;
+  font-size: 80px;
+  animation: epicBounce 1.5s ease infinite;
+  margin-bottom: 25px;
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+  position: relative;
+  z-index: 10;
 }
 
-@keyframes bounce {
-  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-  40% { transform: translateY(-20px); }
-  60% { transform: translateY(-10px); }
+@keyframes epicBounce {
+  0%, 20%, 50%, 80%, 100% { 
+    transform: translateY(0) scale(1);
+  }
+  10% { 
+    transform: translateY(-30px) scale(1.1) rotate(5deg);
+  }
+  30% { 
+    transform: translateY(-20px) scale(1.05) rotate(-3deg);
+  }
+  40% { 
+    transform: translateY(-15px) scale(1.02) rotate(2deg);
+  }
+  60% { 
+    transform: translateY(-10px) scale(1.08) rotate(-1deg);
+  }
 }
 
 .win-title {
-  font-size: 28px;
+  font-size: 36px;
   font-weight: bold;
-  color: #ff6b6b;
-  margin-bottom: 10px;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.win-subtitle {
-  font-size: 18px;
-  color: #666;
-  margin-bottom: 20px;
-}
-
-.win-number {
-  font-size: 24px;
-  font-weight: bold;
-  color: #333;
-  background: linear-gradient(45deg, #f9ca24, #f0932b);
+  background: linear-gradient(45deg, #ff6b6b, #f9ca24, #4ecdc4, #667eea);
+  background-size: 400% 400%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  margin-bottom: 30px;
-  padding: 10px;
-  border-radius: 10px;
-  background-color: #fff3cd;
+  margin-bottom: 15px;
+  text-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+  animation: rainbowText 2s ease-in-out infinite, titleShake 0.5s ease-in-out infinite;
+  position: relative;
+  z-index: 10;
+}
+
+.win-subtitle {
+  font-size: 22px;
+  color: #666;
+  margin-bottom: 25px;
+  animation: subtitleGlow 2s ease-in-out infinite;
+  font-weight: 600;
+}
+
+.win-number {
+  font-size: 32px;
+  font-weight: bold;
+  background: linear-gradient(45deg, #f9ca24, #f0932b, #ff6b6b, #e74c3c);
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 35px;
+  padding: 20px;
+  border-radius: 20px;
+  background-color: rgba(255, 243, 205, 0.8);
+  border: 3px solid #f9ca24;
+  box-shadow: 
+    0 0 20px rgba(249, 202, 36, 0.5),
+    inset 0 0 20px rgba(255, 255, 255, 0.3);
+  animation: numberPulse 1.5s ease-in-out infinite, rainbowText 3s ease-in-out infinite;
+  position: relative;
+  z-index: 10;
 }
 
 .reset-btn {
   width: 100%;
-  background: linear-gradient(45deg, #4ecdc4, #44a08d);
+  background: linear-gradient(45deg, #4ecdc4, #44a08d, #26de81, #20bf6b);
+  background-size: 400% 400%;
   color: white;
   border: none;
   border-radius: 50px;
-  height: 64px;
-  font-size: 22px;
+  height: 70px;
+  font-size: 24px;
   font-weight: bold;
-  box-shadow: 0 8px 20px rgba(78, 205, 196, 0.3);
+  box-shadow: 
+    0 10px 25px rgba(78, 205, 196, 0.4),
+    0 0 30px rgba(78, 205, 196, 0.3);
   transition: all 0.3s ease;
+  animation: buttonGlow 2s ease-in-out infinite;
+  position: relative;
+  z-index: 10;
   
   &::after {
     border: none;
   }
   
   &:active {
-    transform: translateY(2px);
-    box-shadow: 0 4px 10px rgba(78, 205, 196, 0.3);
+    transform: translateY(2px) scale(0.98);
+    box-shadow: 0 6px 15px rgba(78, 205, 196, 0.4);
   }
 }
 

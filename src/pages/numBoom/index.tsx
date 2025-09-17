@@ -14,6 +14,95 @@ const NumBoom = () => {
   const [gameStarted, setGameStarted] = useState(false);
   const [guessHistory, setGuessHistory] = useState<{ value: number; result: string }[]>([]);
 
+  // 播放爆炸音效的函数
+  const playExplosionSound = () => {
+    try {
+      const audioContext = Taro.createInnerAudioContext();
+      // 使用可靠的在线音效资源
+      audioContext.src = 'https://www.soundjay.com/misc/sounds/explosion-01.mp3';
+      audioContext.volume = 0.8;
+      audioContext.play();
+      
+      // 播放完成后销毁音频上下文
+      audioContext.onEnded(() => {
+        audioContext.destroy();
+      });
+      
+      // 错误处理 - 如果在线音效加载失败，使用备用方案
+      audioContext.onError((error) => {
+        console.log('在线音效播放失败，尝试备用方案：', error);
+        audioContext.destroy();
+        // 备用方案：使用系统提示音
+        playSystemBeep();
+      });
+      
+      // 设置超时，防止资源泄漏
+      setTimeout(() => {
+        try {
+          audioContext.destroy();
+        } catch (e) {
+          // 忽略销毁错误
+        }
+      }, 3000);
+    } catch (error) {
+      console.log('音效播放失败：', error);
+      // 备用方案
+      playSystemBeep();
+    }
+  };
+
+  // 备用音效：使用系统提示音
+  const playSystemBeep = () => {
+    try {
+      // 使用系统提示音作为备用
+      Taro.showToast({
+        title: '💥 爆炸！',
+        icon: 'none',
+        duration: 1000
+      });
+    } catch (error) {
+      console.log('系统提示音播放失败：', error);
+    }
+  };
+
+  // 触发震动效果的函数（模拟爆炸效果）
+  const triggerVibration = () => {
+    try {
+      // 第一次强震动
+      Taro.vibrateShort({
+        type: 'heavy'
+      }).catch(() => {
+        // 备用方案：普通短震动
+        Taro.vibrateShort().catch(() => {
+          // 最后备用：长震动
+          Taro.vibrateLong().catch(() => {
+            console.log('设备不支持震动功能');
+          });
+        });
+      });
+      
+      // 模拟爆炸的连续震动效果
+      setTimeout(() => {
+        try {
+          Taro.vibrateShort({ type: 'medium' }).catch(() => {
+            Taro.vibrateShort();
+          });
+        } catch (e) {}
+      }, 100);
+      
+      setTimeout(() => {
+        try {
+          Taro.vibrateShort({ type: 'light' }).catch(() => {
+            Taro.vibrateShort();
+          });
+        } catch (e) {}
+      }, 200);
+      
+    } catch (error) {
+      console.log('震动失败：', error);
+    }
+  };
+
   useEffect(() => {
     try {
       Taro.showShareMenu({
@@ -67,6 +156,12 @@ const NumBoom = () => {
     }
 
     if (guess === num) {
+      // 播放爆炸声效
+      playExplosionSound();
+      
+      // 触发震动效果
+      triggerVibration();
+      
       setBingo(true);
       // 添加到历史记录
       setGuessHistory(prev => [...prev, { value: guess, result: '命中' }]);

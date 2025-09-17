@@ -14,7 +14,16 @@ interface GameItem {
 
 const Index = () => {
   useEffect(() => {
-    Taro.showShareMenu({ withShareTicket: true });
+    try {
+      Taro.showShareMenu({
+        withShareTicket: true,
+        showShareItems: ['wechatFriends', 'wechatMoment']
+      }).catch(err => {
+        console.log('分享菜单设置失败，可能是在开发环境：', err);
+      });
+    } catch (error) {
+      console.log('分享菜单设置失败：', error);
+    }
   }, []);
 
   const gameList: GameItem[] = [

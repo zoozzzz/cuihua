@@ -1,68 +1,359 @@
+.num-boom-container {
+  width: 100vw;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  position: relative;
+  overflow: hidden;
+  
+  // 添加背景装饰
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    animation: rotate 20s linear infinite;
+  }
+}
 
-.wrapper {
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// 游戏头部
+.game-header {
+  text-align: center;
+  padding: 60px 40px 40px;
+  position: relative;
+  z-index: 2;
+  
+  .game-title {
+    font-size: 48px;
+    font-weight: bold;
+    color: #fff;
+    display: block;
+    margin-bottom: 10px;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  }
+  
+  .game-subtitle {
+    font-size: 24px;
+    color: rgba(255,255,255,0.8);
+    display: block;
+  }
+}
+
+// 规则弹窗
+.rule-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100vw;
   height: 100vh;
+  background: rgba(0,0,0,0.6);
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
-  position: relative;
-
-  .inputWrapper {
-    position: absolute;
-    left: 50%;
-    top: 250px;
-    transform: translateX(-50%);
-
-    .at-input-number__input, .at-input-number input {
-      width: 240px;
-      font-size: 40px;
-      height: 86px;
-    }
-    .at-input-number .at-input-number__btn{
-      width: 60px;
-    }
-  }
-
-  .btn {
-    width: 50vw;
-    height: 50vw;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    line-height: 1.5;
-    animation: myBreath 1s linear infinite;  
-  }
-
-  .tips {
-    position: absolute;
-    top: 100px;
-    left: 50%;
-    transform: translateX(-50%);
-
-    .tag{
-      display: inline-block;
-      width: 160px;
-      height: 64px;
-      font-size: 36px;
-      border-radius: 36px;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(10px);
+  
+  .rule-content {
+    background: #fff;
+    border-radius: 24px;
+    padding: 40px;
+    margin: 40px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    animation: slideUp 0.3s ease-out;
+    
+    .rule-title {
+      font-size: 32px;
+      font-weight: bold;
       text-align: center;
-      line-height: 64px;
-      background-color: #6190E8;
+      margin-bottom: 30px;
+      color: #333;
+    }
+    
+    .rule-text {
+      margin-bottom: 30px;
+      
+      text {
+        display: block;
+        font-size: 28px;
+        line-height: 1.6;
+        color: #666;
+        margin-bottom: 15px;
+        
+        &:before {
+          content: '• ';
+          color: #667eea;
+          font-weight: bold;
+        }
+      }
+    }
+    
+    .rule-btn {
+      width: 100%;
+      height: 80px;
+      background: linear-gradient(45deg, #667eea, #764ba2);
       color: #fff;
+      border: none;
+      border-radius: 40px;
+      font-size: 28px;
+      font-weight: bold;
     }
   }
 }
 
-@keyframes myBreath {
-  0%{
-      transform: scale(0.88);
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
   }
-  50%{
-      transform: scale(100%);
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  100%{
-      transform: scale(0.88);
+}
+
+// 范围显示
+.range-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 40px 0;
+  position: relative;
+  z-index: 2;
+  
+  .range-item {
+    background: rgba(255,255,255,0.2);
+    border-radius: 20px;
+    padding: 20px 30px;
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255,255,255,0.3);
+    
+    .range-number {
+      font-size: 36px;
+      font-weight: bold;
+      color: #fff;
+    }
+  }
+  
+  .range-separator {
+    font-size: 32px;
+    color: #fff;
+    margin: 0 20px;
+    font-weight: bold;
+  }
+}
+
+// 输入区域
+.input-section {
+  padding: 0 40px;
+  position: relative;
+  z-index: 2;
+  
+  .input-wrapper {
+    margin-bottom: 30px;
+    
+    .number-input {
+      width: 100%;
+      height: 80px;
+      background: rgba(255,255,255,0.9);
+      border: none;
+      border-radius: 40px;
+      padding: 0 30px;
+      font-size: 32px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      
+      &::placeholder {
+        color: #999;
+        font-size: 24px;
+      }
+    }
+  }
+  
+  .confirm-btn {
+    width: 100%;
+    height: 80px;
+    background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+    color: #fff;
+    border: none;
+    border-radius: 40px;
+    font-size: 32px;
+    font-weight: bold;
+    box-shadow: 0 10px 30px rgba(238, 90, 82, 0.3);
+    
+    &:active {
+      transform: translateY(2px);
+      box-shadow: 0 5px 15px rgba(238, 90, 82, 0.3);
+    }
+  }
+}
+
+// 开始游戏区域
+.start-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50vh;
+  position: relative;
+  z-index: 2;
+  
+  .start-btn {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, #4facfe, #00f2fe);
+    color: #fff;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 20px 60px rgba(79, 172, 254, 0.4);
+    animation: pulse 2s ease-in-out infinite;
+    
+    .start-text {
+      font-size: 32px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+    
+    .start-subtext {
+      font-size: 20px;
+      opacity: 0.8;
+    }
+    
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 20px 60px rgba(79, 172, 254, 0.4);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 25px 80px rgba(79, 172, 254, 0.6);
+  }
+}
+
+// 错误提示
+.error-toast {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(238, 90, 82, 0.95);
+  color: #fff;
+  padding: 20px 40px;
+  border-radius: 50px;
+  z-index: 1001;
+  backdrop-filter: blur(10px);
+  animation: shake 0.5s ease-in-out;
+  
+  .error-text {
+    font-size: 28px;
+    font-weight: bold;
+  }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translate(-50%, -50%) translateX(0); }
+  25% { transform: translate(-50%, -50%) translateX(-10px); }
+  75% { transform: translate(-50%, -50%) translateX(10px); }
+}
+
+// 中奖弹窗
+.win-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(15px);
+  
+  .win-content {
+    background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+    border-radius: 30px;
+    padding: 50px;
+    margin: 40px;
+    text-align: center;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.3);
+    animation: bounceIn 0.6s ease-out;
+    
+    .win-emoji {
+      font-size: 80px;
+      margin-bottom: 20px;
+      animation: bounce 1s ease-in-out infinite;
+    }
+    
+    .win-title {
+      font-size: 40px;
+      font-weight: bold;
+      color: #d63031;
+      margin-bottom: 10px;
+    }
+    
+    .win-subtitle {
+      font-size: 28px;
+      color: #e17055;
+      margin-bottom: 20px;
+    }
+    
+    .win-number {
+      font-size: 32px;
+      color: #2d3436;
+      margin-bottom: 30px;
+      font-weight: bold;
+    }
+    
+    .reset-btn {
+      width: 100%;
+      height: 80px;
+      background: linear-gradient(45deg, #fd79a8, #e84393);
+      color: #fff;
+      border: none;
+      border-radius: 40px;
+      font-size: 28px;
+      font-weight: bold;
+      box-shadow: 0 10px 30px rgba(232, 67, 147, 0.3);
+    }
+  }
+}
+
+@keyframes bounceIn {
+  from {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
   }
 }

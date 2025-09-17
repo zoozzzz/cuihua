@@ -1,3 +1,3 @@
 export default definePageConfig({
-  navigationBarTitleText: '数字爆炸'
+  navigationBarTitleText: '数字炸弹'
 })

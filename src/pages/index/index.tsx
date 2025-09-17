@@ -1,42 +1,115 @@
 import Taro from '@tarojs/taro';
-import { View, Text } from '@tarojs/components'
-import { AtGrid } from 'taro-ui'
-import './index.less'
+import { View, Text } from '@tarojs/components';
 import { useEffect } from 'react';
+import './index.less';
 
 interface GameItem {
-  image: string;
-  value: string;
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
   path: string;
+  available: boolean;
 }
 
 const Index = () => {
   useEffect(() => {
-    Taro.showShareMenu({ withShareTicket: true })
+    Taro.showShareMenu({ withShareTicket: true });
   }, []);
 
-  const onSelectGame = (item: GameItem, index: number) => {
-    item.path && Taro.navigateTo({url: item.path})
-  }
+  const gameList: GameItem[] = [
+    {
+      id: 'numBoom',
+      title: '🎯 数字炸弹',
+      description: '猜数字喝酒游戏，酒桌必备',
+      icon: '💣',
+      path: '/pages/numBoom/index',
+      available: true
+    },
+    {
+      id: 'truthOrDare',
+      title: '🎭 真心话大冒险',
+      description: '经典聚会游戏（敬请期待）',
+      icon: '🎪',
+      path: '',
+      available: false
+    },
+    {
+      id: 'whoIsUndercover',
+      title: '🕵️ 谁是卧底',
+      description: '推理类聚会游戏（敬请期待）',
+      icon: '🔍',
+      path: '',
+      available: false
+    },
+    {
+      id: 'drawGuess',
+      title: '🎨 你画我猜',
+      description: '绘画猜词游戏（敬请期待）',
+      icon: '🖼️',
+      path: '',
+      available: false
+    }
+  ];
+
+  const navigateToGame = (game: GameItem) => {
+    if (game.available && game.path) {
+      Taro.navigateTo({ url: game.path });
+    } else {
+      Taro.showToast({
+        title: '敬请期待',
+        icon: 'none',
+        duration: 2000
+      });
+    }
+  };
+
   return (
-    <View className='index'>
-      <AtGrid
-        onClick={onSelectGame}
-        data={
-        [
-          {
-            image: 'https://img12.360buyimg.com/jdphoto/s72x72_jfs/t6160/14/2008729947/2754/7d512a86/595c3aeeNa89ddf71.png',
-            value: '数字爆炸',
-            path: '/pages/numBoom/index'
-          },
-          {
-            image: 'https://img20.360buyimg.com/jdphoto/s72x72_jfs/t15151/308/1012305375/2300/536ee6ef/5a411466N040a074b.png',
-            value: '（敬请期待）',
-            path: ''
-          },
-        ]
-      } />
+    <View className='index-container'>
+      {/* 头部 */}
+      <View className='header'>
+        <View className='header-bg'></View>
+        <View className='header-content'>
+          <Text className='app-title'>🍻 翠花游戏</Text>
+          <Text className='app-subtitle'>酒桌游戏合集</Text>
+        </View>
+      </View>
+
+      {/* 游戏列表 */}
+      <View className='game-list'>
+        <View className='section-title'>
+          <Text>🎮 选择游戏</Text>
+        </View>
+        <View className='game-grid'>
+          {gameList.map((game) => (
+            <View
+              key={game.id}
+              className={`game-card ${!game.available ? 'disabled' : ''}`}
+              onClick={() => navigateToGame(game)}
+            >
+              <View className='game-icon'>
+                <Text>{game.icon}</Text>
+              </View>
+              <View className='game-info'>
+                <Text className='game-title'>{game.title}</Text>
+                <Text className='game-desc'>{game.description}</Text>
+              </View>
+              {!game.available && (
+                <View className='coming-soon'>
+                  <Text>敬请期待</Text>
+                </View>
+              )}
+            </View>
+          ))}
+        </View>
+      </View>
+
+      {/* 底部信息 */}
+      <View className='footer'>
+        <Text className='footer-text'>让聚会更有趣 🎉</Text>
+      </View>
     </View>
-  )
-}
+  );
+};
+
 export default Index;

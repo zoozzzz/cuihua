@@ -1,12 +1,12 @@
 export default defineAppConfig({
   pages: [
     'pages/index/index',
-    'pages/numBoom/index',
+    'pages/numBoom/index'
   ],
   window: {
     backgroundTextStyle: 'light',
-    navigationBarBackgroundColor: '#fff',
-    navigationBarTitleText: 'WeChat',
-    navigationBarTextStyle: 'black'
+    navigationBarBackgroundColor: '#667eea',
+    navigationBarTitleText: '翠花游戏',
+    navigationBarTextStyle: 'white'
   }
 })

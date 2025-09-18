@@ -18,23 +18,56 @@ const NumBoom = () => {
   const playExplosionSound = () => {
     try {
       const audioContext = Taro.createInnerAudioContext();
-      // 使用可靠的在线音效资源
-      audioContext.src = 'https://www.soundjay.com/misc/sounds/explosion-01.mp3';
-      audioContext.volume = 0.8;
-      audioContext.play();
+      
+      // 尝试多种路径格式 - 小程序环境专用路径
+      const audioSources = [
+        '/assets/sounds/boom.ogg',
+        'assets/sounds/boom.ogg',
+        './assets/sounds/boom.ogg',
+        '../../assets/sounds/boom.ogg'
+      ];
+      
+      let currentSourceIndex = 0;
+      
+      const tryNextSource = () => {
+        if (currentSourceIndex >= audioSources.length) {
+          console.log('所有爆炸音效路径都尝试失败，使用备用方案');
+          audioContext.destroy();
+          playSystemBeep();
+          return;
+        }
+        
+        audioContext.src = audioSources[currentSourceIndex];
+        console.log('尝试爆炸音效路径：', audioSources[currentSourceIndex]);
+        currentSourceIndex++;
+      };
+      
+      audioContext.volume = 0.9; // 爆炸音效音量90%
+      audioContext.loop = false;
+      
+      audioContext.onCanplay(() => {
+        console.log('爆炸音效可以播放，开始播放');
+        audioContext.play();
+      });
+      
+      audioContext.onPlay(() => {
+        console.log('爆炸音效开始播放');
+      });
       
       // 播放完成后销毁音频上下文
       audioContext.onEnded(() => {
+        console.log('爆炸音效播放结束');
         audioContext.destroy();
       });
       
-      // 错误处理 - 如果在线音效加载失败，使用备用方案
+      // 错误处理 - 如果音效加载失败，尝试下一个路径
       audioContext.onError((error) => {
-        console.log('在线音效播放失败，尝试备用方案：', error);
-        audioContext.destroy();
-        // 备用方案：使用系统提示音
-        playSystemBeep();
+        console.log('爆炸音效播放失败：', error, '当前路径：', audioContext.src);
+        tryNextSource();
       });
+      
+      // 开始尝试第一个路径
+      tryNextSource();
       
       // 设置超时，防止资源泄漏
       setTimeout(() => {
@@ -43,9 +76,9 @@ const NumBoom = () => {
         } catch (e) {
           // 忽略销毁错误
         }
-      }, 3000);
+      }, 5000);
     } catch (error) {
-      console.log('音效播放失败：', error);
+      console.log('爆炸音效初始化失败：', error);
       // 备用方案
       playSystemBeep();
     }
@@ -68,7 +101,9 @@ const NumBoom = () => {
   // 触发震动效果的函数（模拟爆炸效果）
   const triggerVibration = () => {
     try {
-      // 第一次强震动
+      console.log('触发爆炸震动效果');
+      
+      // 第一次超强震动 - 模拟爆炸瞬间
       Taro.vibrateShort({
         type: 'heavy'
       }).catch(() => {
@@ -81,14 +116,30 @@ const NumBoom = () => {
         });
       });
       
-      // 模拟爆炸的连续震动效果
+      // 模拟爆炸的连续震动效果 - 更密集的震动序列
+      setTimeout(() => {
+        try {
+          Taro.vibrateShort({ type: 'heavy' }).catch(() => {
+            Taro.vibrateShort();
+          });
+        } catch (e) {}
+      }, 80);
+      
       setTimeout(() => {
         try {
           Taro.vibrateShort({ type: 'medium' }).catch(() => {
             Taro.vibrateShort();
           });
         } catch (e) {}
-      }, 100);
+      }, 160);
+      
+      setTimeout(() => {
+        try {
+          Taro.vibrateShort({ type: 'medium' }).catch(() => {
+            Taro.vibrateShort();
+          });
+        } catch (e) {}
+      }, 240);
       
       setTimeout(() => {
         try {
@@ -96,7 +147,7 @@ const NumBoom = () => {
             Taro.vibrateShort();
           });
         } catch (e) {}
-      }, 200);
+      }, 320);
       
     } catch (error) {
       console.log('震动失败：', error);
@@ -124,11 +175,20 @@ const NumBoom = () => {
     setShowRule(false);
   };
 
+  // 处理键盘输入变化
   const handleInputChange = (e) => {
     const inputValue = e.detail.value;
     // 只允许数字输入，移除所有非数字字符
     const numericValue = inputValue.replace(/[^0-9]/g, '');
     setCurrentValue(numericValue);
+  };
+
+  // 处理键盘确认事件
+  const handleKeyDown = (e) => {
+    // 当用户按下Enter键时触发确定
+    if (e.key === 'Enter' || e.keyCode === 13) {
+      confirmGuess();
+    }
   };
 
   const confirmGuess = () => {
@@ -275,6 +335,7 @@ const NumBoom = () => {
                   value={currentValue}
                   placeholder='Lucky Number'
                   onInput={handleInputChange}
+                  onKeyDown={handleKeyDown}
                   maxLength={3}
                 />
               </View>

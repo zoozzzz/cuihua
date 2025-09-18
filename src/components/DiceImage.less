@@ -1,0 +1,213 @@
+/* 简化骰子容器 */
+.simple-dice {
+  display: inline-block;
+  margin: 5px;
+  
+  &.dice-small {
+    .dice-simple, .dice-cube {
+      width: 45px;
+      height: 45px;
+    }
+    .dice-face {
+      width: 45px;
+      height: 45px;
+    }
+    .dice-dot {
+      width: 6px;
+      height: 6px;
+    }
+  }
+  
+  &.dice-normal {
+    .dice-simple, .dice-cube {
+      width: 60px;
+      height: 60px;
+    }
+    .dice-face {
+      width: 60px;
+      height: 60px;
+    }
+    .dice-dot {
+      width: 8px;
+      height: 8px;
+    }
+  }
+  
+  &.dice-large {
+    .dice-simple, .dice-cube {
+      width: 70px;
+      height: 70px;
+    }
+    .dice-face {
+      width: 70px;
+      height: 70px;
+    }
+    .dice-dot {
+      width: 12px;
+      height: 12px;
+    }
+  }
+  
+  &.rolling .dice-cube {
+    animation: dice2DRoll 2s ease-out;
+  }
+  
+  &.dice-spinning .dice-cube {
+    animation: dice2DSpin 0.1s infinite linear;
+  }
+}
+
+/* 2D平面骰子本体 */
+.dice-simple {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  margin: 0 auto;
+  transition: all 0.4s ease;
+}
+
+/* 2D平面骰子 */
+.dice-cube {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  margin: 0 auto;
+  
+  &.spinning {
+    animation: dice2DSpin 0.1s infinite linear;
+  }
+}
+
+/* 骰子面 */
+.dice-face {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(145deg, #ffffff, #f8f9fa);
+  border: 2px solid #c1c3bf;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  
+  /* 只保留正面和主面 */
+  &.dice-front {
+    /* 2D正面显示 */
+  }
+  
+  /* 简化版主面 */
+  &.main-face {
+    background: linear-gradient(145deg, #ffffff, #f8f9fa);
+    border: 3px solid #c1c3bf;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    width: 60px;
+    height: 60px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+
+
+/* 骰子点数 */
+.dice-dot {
+  width: 8px;
+  height: 8px;
+  background: radial-gradient(circle, #2c3e50, #34495e);
+  border-radius: 50%;
+  position: absolute;
+  box-shadow: 
+    0 1px 2px rgba(0, 0, 0, 0.3),
+    inset 0 1px 1px rgba(255, 255, 255, 0.2);
+  
+  /* 点数位置 */
+  &.top-left {
+    top: 12%;
+    left: 12%;
+  }
+  
+  &.top-right {
+    top: 12%;
+    right: 12%;
+  }
+  
+  &.middle-left {
+    top: 43%;
+    left: 12%;
+  }
+  
+  &.middle-right {
+    top: 43%;
+    right: 12%;
+  }
+  
+  &.center {
+    top: 43%;
+    left: 43%;
+  }
+  
+  &.bottom-left {
+    bottom: 12%;
+    left: 12%;
+  }
+  
+  &.bottom-right {
+    bottom: 12%;
+    right: 12%;
+  }
+}
+
+/* 不同数字的点数颜色 */
+.dice-face[data-value="1"] .dice-dot,
+.dice-face[data-value="4"] .dice-dot {
+  background: radial-gradient(circle, #e74c3c, #c0392b);
+  border: 1px solid #a93226;
+}
+
+.dice-face[data-value="2"] .dice-dot,
+.dice-face[data-value="3"] .dice-dot,
+.dice-face[data-value="5"] .dice-dot,
+.dice-face[data-value="6"] .dice-dot {
+  background: radial-gradient(circle, #2c3e50, #1a252f);
+  border: 1px solid #1a252f;
+}
+
+/* 2D旋转动画 */
+@keyframes dice2DRoll {
+  0% { 
+    transform: rotate(0deg);
+  }
+  25% { 
+    transform: rotate(90deg) scale(1.1);
+  }
+  50% { 
+    transform: rotate(180deg) scale(1.2);
+  }
+  75% { 
+    transform: rotate(270deg) scale(1.1);
+  }
+  100% { 
+    transform: rotate(360deg);
+  }
+}
+
+/* 2D缓慢旋转动画 */
+@keyframes dice2DSpin {
+  0% { 
+    transform: rotate(0deg) scale(1);
+  }
+  50% { 
+    transform: rotate(180deg) scale(1.05);
+  }
+  100% { 
+    transform: rotate(360deg) scale(1);
+  }
+}
+
+

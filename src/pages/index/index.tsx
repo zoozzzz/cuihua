@@ -36,6 +36,14 @@ const Index = () => {
       available: true
     },
     {
+      id: 'diceBluff',
+      title: '🎲 大话骰',
+      description: '经典骰子喝酒游戏',
+      icon: '🎯',
+      path: '/pages/diceBluff/index',
+      available: true
+    },
+    {
       id: 'truthOrDare',
       title: '🎭 真心话大冒险',
       description: '经典聚会游戏（敬请期待）',
@@ -79,7 +87,7 @@ const Index = () => {
       <View className='header'>
         <View className='header-bg'></View>
         <View className='header-content'>
-          <Text className='app-title'>🍻 翠花游戏</Text>
+          <Text className='app-title'>🍻 今晚玩乜嘢</Text>
           <Text className='app-subtitle'>酒桌游戏合集</Text>
         </View>
       </View>
